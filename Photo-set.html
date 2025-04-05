@@ -1,0 +1,76 @@
+// App.jsx
+import React, { useRef, useState } from "react";
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
+import "./App.css"; // Optional for extra styling
+
+export default function App() {
+  const cropperRef = useRef(null);
+  const [image, setImage] = useState(null);
+  const [croppedImage, setCroppedImage] = useState(null);
+
+  const onImageChange = (e) => {
+    e.preventDefault();
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const reader = new FileReader();
+      reader.onload = () => setImage(reader.result);
+      reader.readAsDataURL(files[0]);
+    }
+  };
+
+  const cropImage = () => {
+    const cropper = cropperRef.current?.cropper;
+    if (cropper) {
+      const croppedDataURL = cropper.getCroppedCanvas().toDataURL();
+      setCroppedImage(croppedDataURL);
+    }
+  };
+
+  const downloadImage = () => {
+    const link = document.createElement("a");
+    link.href = croppedImage;
+    link.download = "cropped-image.png";
+    link.click();
+  };
+
+  return (
+    <div className="flex flex-col items-center p-6 gap-6 font-sans">
+      <h1 className="text-3xl font-bold text-blue-600">AI Photo Cropper</h1>
+
+      <input type="file" accept="image/*" onChange={onImageChange} className="mb-4" />
+
+      {image && (
+        <Cropper
+          src={image}
+          style={{ height: 400, width: "100%", maxWidth: "500px" }}
+          initialAspectRatio={1}
+          guides={true}
+          ref={cropperRef}
+          viewMode={1}
+        />
+      )}
+
+      {image && (
+        <button
+          onClick={cropImage}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Crop Image
+        </button>
+      )}
+
+      {croppedImage && (
+        <div className="mt-4 flex flex-col items-center">
+          <img src={croppedImage} alt="Cropped" className="rounded shadow-lg max-w-sm" />
+          <button
+            onClick={downloadImage}
+            className="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          >
+            Download Cropped Image
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
