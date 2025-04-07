@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+  <meta charset="UTF-8">
+  <title>ગ્રોસરી કેલ્ક્યુલેટર</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f1f1f1;
+      padding: 20px;
+    }
+    h2 {
+      color: #333;
+    }
+    label, input {
+      display: block;
+      margin: 10px 0;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    #total {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>ગ્રોસરી કેલ્ક્યુલેટર</h2>
+
+  <div id="items">
+    <div>
+      <label>વસ્તુ 1 ભાવ:</label>
+      <input type="number" id="price1" placeholder="ઉદાહરણ: 25">
+      <label>જથ્થો:</label>
+      <input type="number" id="qty1" placeholder="ઉદાહરણ: 2">
+    </div>
+
+    <div>
+      <label>વસ્તુ 2 ભાવ:</label>
+      <input type="number" id="price2" placeholder="ઉદાહરણ: 50">
+      <label>જથ્થો:</label>
+      <input type="number" id="qty2" placeholder="ઉદાહરણ: 1">
+    </div>
+
+    <div>
+      <label>વસ્તુ 3 ભાવ:</label>
+      <input type="number" id="price3" placeholder="ઉદાહરણ: 10">
+      <label>જથ્થો:</label>
+      <input type="number" id="qty3" placeholder="ઉદાહરણ: 5">
+    </div>
+  </div>
+
+  <button onclick="calculateTotal()">કુલ ગણો</button>
+
+  <div id="total"></div>
+
+  <script>
+    function calculateTotal() {
+      let total = 0;
+      for (let i = 1; i <= 3; i++) {
+        let price = parseFloat(document.getElementById('price' + i).value) || 0;
+        let qty = parseFloat(document.getElementById('qty' + i).value) || 0;
+        total += price * qty;
+      }
+      document.getElementById('total').innerText = "કુલ રકમ: ₹" + total.toFixed(2);
+    }
+  </script>
+</body>
+</html>
